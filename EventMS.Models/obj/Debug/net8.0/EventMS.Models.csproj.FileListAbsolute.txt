@@ -1,0 +1,14 @@
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\bin\Debug\net8.0\EventMS.Models.deps.json
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\bin\Debug\net8.0\EventMS.Models.runtimeconfig.json
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\bin\Debug\net8.0\EventMS.Models.dll
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\bin\Debug\net8.0\EventMS.Models.pdb
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\EventMS.Models.csproj.AssemblyReference.cache
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\EventMS.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\EventMS.Models.AssemblyInfoInputs.cache
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\EventMS.Models.AssemblyInfo.cs
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\EventMS.Models.csproj.CoreCompileInputs.cache
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\EventMS.Models.dll
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\refint\EventMS.Models.dll
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\EventMS.Models.pdb
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\EventMS.Models.genruntimeconfig.cache
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.Models\obj\Debug\net8.0\ref\EventMS.Models.dll

@@ -1,0 +1,17 @@
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\bin\Debug\net8.0\EventMS.DAL.deps.json
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\bin\Debug\net8.0\EventMS.DAL.runtimeconfig.json
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\bin\Debug\net8.0\EventMS.DAL.dll
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\bin\Debug\net8.0\EventMS.DAL.pdb
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\bin\Debug\net8.0\EventMS.Models.dll
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\bin\Debug\net8.0\EventMS.Models.pdb
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\EventMS.DAL.csproj.AssemblyReference.cache
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\EventMS.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\EventMS.DAL.AssemblyInfoInputs.cache
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\EventMS.DAL.AssemblyInfo.cs
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\EventMS.DAL.csproj.CoreCompileInputs.cache
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\EventMS..74441596.Up2Date
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\EventMS.DAL.dll
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\refint\EventMS.DAL.dll
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\EventMS.DAL.pdb
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\EventMS.DAL.genruntimeconfig.cache
+C:\Users\HP\Downloads\EventMS\EventMS\EventMS.DAL\obj\Debug\net8.0\ref\EventMS.DAL.dll
