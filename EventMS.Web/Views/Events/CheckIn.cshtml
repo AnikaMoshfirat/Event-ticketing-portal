@@ -1,0 +1,77 @@
+@{ ViewData["Title"] = "Check-In Portal"; }
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark fw-bold">
+                <i class="bi bi-qr-code-scan me-2"></i>Attendee Check-In Portal
+            </div>
+            <div class="card-body">
+                @{
+                    var ev = ViewBag.Event as Event;
+                }
+                @if (ev != null)
+                {
+                    <p class="text-muted mb-3">
+                        <i class="bi bi-calendar3 me-1"></i><strong>@ev.Title</strong>
+                        — @ev.EventDate.ToString("dd MMM yyyy, hh:mm tt")
+                    </p>
+                }
+
+                <!-- Check-in result -->
+                @if (TempData["CheckInSuccess"] != null)
+                {
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle-fill me-2"></i>@TempData["CheckInSuccess"]
+                        @{
+                            var reg = ViewBag.CheckedInReg as Registration;
+                        }
+                        @if (reg != null)
+                        {
+                            <div class="mt-2 small">
+                                <strong>Booking ID:</strong> @reg.BookingId<br />
+                                <strong>Name:</strong> @reg.AttendeeName<br />
+                                <strong>Email:</strong> @reg.AttendeeEmail<br />
+                                <strong>Check-In Time:</strong> @reg.CheckInTime?.ToString("hh:mm tt")
+                            </div>
+                        }
+                    </div>
+                }
+                @if (TempData["CheckInError"] != null)
+                {
+                    <div class="alert alert-danger">
+                        <i class="bi bi-x-circle-fill me-2"></i>@TempData["CheckInError"]
+                    </div>
+                }
+
+                <!-- Check-In Form -->
+                <form asp-action="CheckIn" method="post" class="mt-3">
+                    <input type="hidden" name="eventId" value="@ev?.Id" />
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Enter Booking ID</label>
+                        <input name="bookingId" class="form-control form-control-lg text-center fw-bold"
+                               placeholder="EVT-20250515-A3F7"
+                               value="@ViewBag.BookingId"
+                               style="letter-spacing:2px; text-transform:uppercase"
+                               autofocus />
+                        <div class="form-text">Enter the unique Booking ID printed on the attendee's ticket.</div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-warning btn-lg">
+                            <i class="bi bi-person-check-fill me-2"></i>Check In Attendee
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="mt-3 d-flex gap-2">
+            <a asp-action="Attendees" asp-route-id="@ev?.Id" class="btn btn-outline-info btn-sm">
+                <i class="bi bi-people me-1"></i>View All Attendees
+            </a>
+            <a asp-action="Details" asp-route-id="@ev?.Id" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Back to Event
+            </a>
+        </div>
+    </div>
+</div>

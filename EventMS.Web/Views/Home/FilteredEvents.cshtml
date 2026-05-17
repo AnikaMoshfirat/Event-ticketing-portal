@@ -1,0 +1,68 @@
+@model IEnumerable<Event>
+@{ ViewData["Title"] = ViewBag.FilterLabel; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">
+        @if (ViewBag.Filter == "Upcoming") { <i class="bi bi-calendar-arrow-up text-success me-2"></i> }
+        else if (ViewBag.Filter == "Today") { <i class="bi bi-calendar-check text-warning me-2"></i> }
+        else { <i class="bi bi-calendar-arrow-down text-secondary me-2"></i> }
+        @ViewBag.FilterLabel
+    </h2>
+    <div class="d-flex gap-2">
+        <a asp-action="Upcoming" class="btn btn-sm @(ViewBag.Filter == "Upcoming" ? "btn-success" : "btn-outline-success")">Upcoming</a>
+        <a asp-action="Today" class="btn btn-sm @(ViewBag.Filter == "Today" ? "btn-warning" : "btn-outline-warning")">Today</a>
+        <a asp-action="Past" class="btn btn-sm @(ViewBag.Filter == "Past" ? "btn-secondary" : "btn-outline-secondary")">Past</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-dark">Dashboard</a>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>No @ViewBag.FilterLabel.ToString().ToLower() found.
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var ev in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 event-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-secondary">@ev.Category</span>
+                            @{
+                                var s = ev.Status;
+                                var sc = s switch
+                                {
+                                    EventStatus.Upcoming => "bg-success",
+                                    EventStatus.SoldOut => "bg-danger",
+                                    EventStatus.Completed => "bg-dark",
+                                    EventStatus.Cancelled => "bg-dark",
+                                    _ => "bg-info"
+                                };
+                            }
+                            <span class="badge @sc">@s</span>
+                        </div>
+                        <h5 class="card-title">@ev.Title</h5>
+                        <p class="text-muted small mb-1"><i class="bi bi-geo-alt me-1"></i>@ev.Venue</p>
+                        <p class="text-muted small mb-2">
+                            <i class="bi bi-calendar3 me-1"></i>@ev.EventDate.ToString("dd MMM yyyy, hh:mm tt")
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-primary">৳@ev.TicketPrice.ToString("N0")</span>
+                            <span class="small @(ev.IsSoldOut ? "text-danger fw-bold" : "text-success")">
+                                @(ev.IsSoldOut ? "SOLD OUT" : $"{ev.AvailableSeats}/{ev.MaxCapacity} seats")
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <a asp-controller="Events" asp-action="Details" asp-route-id="@ev.Id"
+                           class="btn btn-outline-primary btn-sm w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

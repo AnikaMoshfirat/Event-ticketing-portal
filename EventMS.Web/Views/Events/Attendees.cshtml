@@ -1,0 +1,84 @@
+@model AttendeeReportDto
+@{ ViewData["Title"] = "Attendees - " + Model.EventTitle; }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-0"><i class="bi bi-people me-2"></i>Attendees</h2>
+        <small class="text-muted">@Model.EventTitle — @Model.EventDate.ToString("dd MMM yyyy")</small>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i>Back
+    </a>
+</div>
+
+<!-- Summary -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="card text-white bg-primary shadow-sm text-center py-2">
+            <div class="fs-1 fw-bold">@Model.TotalRegistered</div>
+            <div class="small">Total Registered</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card text-white bg-success shadow-sm text-center py-2">
+            <div class="fs-1 fw-bold">@Model.TotalCheckedIn</div>
+            <div class="small">Checked In</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card text-white bg-warning shadow-sm text-center py-2">
+            <div class="fs-1 fw-bold">৳@Model.TotalRevenue.ToString("N0")</div>
+            <div class="small">Revenue</div>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Attendees.Any())
+{
+    <div class="alert alert-info">No registrations yet for this event.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Registered</th>
+                    <th>Paid</th>
+                    <th>Check-In</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model.Attendees)
+                {
+                    <tr>
+                        <td>
+                            <code class="fw-bold">@a.BookingId</code>
+                        </td>
+                        <td class="fw-semibold">@a.AttendeeName</td>
+                        <td class="small">@a.AttendeeEmail</td>
+                        <td class="small">@(a.AttendeePhone ?? "—")</td>
+                        <td class="small text-muted">@a.RegisteredAt.ToString("dd MMM, hh:mm tt")</td>
+                        <td class="fw-bold text-success">৳@a.AmountPaid.ToString("N0")</td>
+                        <td>
+                            @if (a.CheckInStatus == CheckInStatus.CheckedIn)
+                            {
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-lg me-1"></i>@a.CheckInTime?.ToString("hh:mm tt")
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-light text-secondary border">Not yet</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

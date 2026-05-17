@@ -1,0 +1,63 @@
+@model IEnumerable<Registration>
+@{ ViewData["Title"] = "All Registrations"; }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0"><i class="bi bi-ticket-perforated me-2"></i>All Registrations</h2>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No registrations yet.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Attendee</th>
+                    <th>Event</th>
+                    <th>Registered</th>
+                    <th>Paid</th>
+                    <th>Check-In</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td><code class="fw-bold">@r.BookingId</code></td>
+                        <td>
+                            <div class="fw-semibold">@r.AttendeeName</div>
+                            <div class="small text-muted">@r.AttendeeEmail</div>
+                        </td>
+                        <td class="small">@r.Event?.Title</td>
+                        <td class="small text-muted">@r.RegisteredAt.ToString("dd MMM yyyy")</td>
+                        <td class="fw-bold text-success">৳@r.AmountPaid.ToString("N0")</td>
+                        <td>
+                            @if (r.CheckInStatus == CheckInStatus.CheckedIn)
+                            {
+                                <span class="badge bg-success">Checked In</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Pending</span>
+                            }
+                        </td>
+                        <td>
+                            @if (r.CheckInStatus != CheckInStatus.CheckedIn)
+                            {
+                                <form asp-action="Cancel" asp-route-id="@r.Id" method="post"
+                                      onsubmit="return confirm('Cancel this registration?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

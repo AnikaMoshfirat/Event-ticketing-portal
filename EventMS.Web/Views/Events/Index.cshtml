@@ -1,0 +1,104 @@
+@model IEnumerable<Event>
+@{ ViewData["Title"] = "All Events"; }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0"><i class="bi bi-calendar-event me-2"></i>All Events</h2>
+    <a asp-action="Create" class="btn btn-warning"><i class="bi bi-plus-lg me-1"></i>Create Event</a>
+</div>
+
+<!-- Search -->
+<div class="card mb-4 shadow-sm border-0 bg-light">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label small fw-semibold">Title</label>
+                <input name="title" value="@ViewBag.Title" class="form-control form-control-sm" placeholder="Search events..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-semibold">Category</label>
+                <select name="category" class="form-select form-select-sm">
+                    <option value="">-- All Categories --</option>
+                    @foreach (var cat in (string[])ViewBag.Categories)
+                    {
+                        <option value="@cat" selected="@(ViewBag.Category == cat)">@cat</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-semibold">Venue</label>
+                <input name="venue" value="@ViewBag.Venue" class="form-control form-control-sm" placeholder="Search venue..." />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="bi bi-search me-1"></i>Search
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info"><i class="bi bi-info-circle me-2"></i>No events found.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Venue</th>
+                    <th class="text-center">Seats</th>
+                    <th class="text-end">Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ev in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@ev.Title</td>
+                        <td><span class="badge bg-secondary">@ev.Category</span></td>
+                        <td class="small">@ev.EventDate.ToString("dd MMM yyyy")</td>
+                        <td class="small text-muted">@ev.Venue</td>
+                        <td class="text-center">
+                            @if (ev.IsSoldOut)
+                            {
+                                <span class="badge bg-danger">SOLD OUT</span>
+                            }
+                            else
+                            {
+                                <span class="text-success small fw-semibold">
+                                    @ev.AvailableSeats / @ev.MaxCapacity
+                                </span>
+                            }
+                        </td>
+                        <td class="text-end fw-bold">৳@ev.TicketPrice.ToString("N0")</td>
+                        <td>
+                            @{
+                                var sc = ev.Status switch
+                                {
+                                    EventStatus.Upcoming => "bg-success",
+                                    EventStatus.SoldOut => "bg-danger",
+                                    EventStatus.Completed => "bg-dark",
+                                    EventStatus.Cancelled => "bg-dark text-white",
+                                    _ => "bg-info"
+                                };
+                            }
+                            <span class="badge @sc">@ev.Status</span>
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@ev.Id" class="btn btn-sm btn-outline-info">Details</a>
+                            <a asp-action="Edit" asp-route-id="@ev.Id" class="btn btn-sm btn-outline-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@ev.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

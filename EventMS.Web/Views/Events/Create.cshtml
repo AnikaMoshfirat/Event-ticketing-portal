@@ -1,0 +1,79 @@
+@model Event
+@{ ViewData["Title"] = "Create Event"; }
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark fw-bold">
+                <i class="bi bi-calendar-plus me-2"></i>Create New Event
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label fw-semibold"></label>
+                        <input asp-for="Title" class="form-control" placeholder="e.g. .NET Advanced Seminar 2025" />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"
+                                  placeholder="Describe what this event is about..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Category" class="form-label fw-semibold"></label>
+                            <select asp-for="Category" class="form-select">
+                                @foreach (EventCategory cat in (Array)ViewBag.Categories)
+                                {
+                                    <option value="@cat">@cat</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="OrganizerName" class="form-label fw-semibold"></label>
+                            <input asp-for="OrganizerName" class="form-control" placeholder="Organizer / Club name" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Venue" class="form-label fw-semibold"></label>
+                        <input asp-for="Venue" class="form-control" placeholder="e.g. BUET Auditorium, Dhaka" />
+                        <span asp-validation-for="Venue" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="EventDate" class="form-label fw-semibold"></label>
+                            <input asp-for="EventDate" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="EventDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="MaxCapacity" class="form-label fw-semibold"></label>
+                            <input asp-for="MaxCapacity" type="number" class="form-control" min="1" placeholder="50" />
+                            <span asp-validation-for="MaxCapacity" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="TicketPrice" class="form-label fw-semibold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text">৳</span>
+                                <input asp-for="TicketPrice" type="number" class="form-control" min="0" placeholder="500" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-warning px-4">
+                            <i class="bi bi-save me-1"></i>Create Event
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

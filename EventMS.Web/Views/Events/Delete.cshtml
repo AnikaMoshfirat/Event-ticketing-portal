@@ -1,0 +1,36 @@
+@model Event
+@{ ViewData["Title"] = "Delete Event"; }
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white fw-bold">
+                <i class="bi bi-trash me-2"></i>Confirm Delete
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete <strong>@Model.Title</strong>?</p>
+                <ul class="small text-muted">
+                    <li>Date: @Model.EventDate.ToString("dd MMM yyyy")</li>
+                    <li>Venue: @Model.Venue</li>
+                    <li>Registrations: @Model.Registrations.Count</li>
+                </ul>
+                @if (Model.Registrations.Any())
+                {
+                    <div class="alert alert-warning small">
+                        <i class="bi bi-exclamation-triangle me-1"></i>
+                        This event has registrations and cannot be deleted.
+                    </div>
+                }
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger" @(Model.Registrations.Any() ? "disabled" : "")>
+                            <i class="bi bi-trash me-1"></i>Yes, Delete
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

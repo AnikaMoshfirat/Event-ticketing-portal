@@ -1,0 +1,168 @@
+@model DashboardStatsDto
+@{ ViewData["Title"] = "Dashboard"; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0"><i class="bi bi-speedometer2 me-2"></i>Dashboard</h2>
+    <a asp-controller="Events" asp-action="Create" class="btn btn-warning">
+        <i class="bi bi-plus-lg me-1"></i>Create Event
+    </a>
+</div>
+
+<!-- ── Stats Cards ─────────────────────────────────────────────── -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card text-white bg-primary h-100 shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="fs-1 fw-bold">@Model.TotalEvents</div>
+                    <div class="small">Total Events</div>
+                </div>
+                <i class="bi bi-calendar-event fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card text-white bg-success h-100 shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="fs-1 fw-bold">@Model.TotalRegistrations</div>
+                    <div class="small">Total Registrations</div>
+                </div>
+                <i class="bi bi-ticket-perforated fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card text-white bg-info h-100 shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="fs-1 fw-bold">@Model.TotalCheckedIn</div>
+                    <div class="small">Checked In</div>
+                </div>
+                <i class="bi bi-person-check fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card text-white bg-warning h-100 shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="fs-1 fw-bold">৳@Model.TotalRevenue.ToString("N0")</div>
+                    <div class="small">Total Revenue</div>
+                </div>
+                <i class="bi bi-cash-stack fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Feature 3: Date-Filter Buttons ─────────────────────────── -->
+<div class="card mb-4 border-0 bg-light shadow-sm">
+    <div class="card-body py-3">
+        <p class="mb-2 fw-semibold text-secondary small text-uppercase">Filter Events by Date</p>
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-controller="Home" asp-action="Upcoming"
+               class="btn btn-outline-success">
+                <i class="bi bi-calendar-arrow-up me-1"></i>
+                Upcoming Events
+                <span class="badge bg-success ms-1">@Model.UpcomingEvents</span>
+            </a>
+            <a asp-controller="Home" asp-action="Today"
+               class="btn btn-outline-warning">
+                <i class="bi bi-calendar-check me-1"></i>
+                Today's Events
+                <span class="badge bg-warning text-dark ms-1">@Model.TodaysEvents</span>
+            </a>
+            <a asp-controller="Home" asp-action="Past"
+               class="btn btn-outline-secondary">
+                <i class="bi bi-calendar-arrow-down me-1"></i>
+                Past Events
+                <span class="badge bg-secondary ms-1">@Model.PastEvents</span>
+            </a>
+            <a asp-controller="Events" asp-action="Index"
+               class="btn btn-outline-primary ms-auto">
+                <i class="bi bi-list-ul me-1"></i>All Events
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <!-- Events by Category -->
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header fw-semibold bg-white">
+                <i class="bi bi-pie-chart me-2 text-primary"></i>Events by Category
+            </div>
+            <div class="card-body">
+                @foreach (var c in Model.EventsByCategory)
+                {
+                    var pct = Model.TotalEvents > 0 ? c.Count * 100 / Model.TotalEvents : 0;
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span>@c.Category</span><span class="fw-bold">@c.Count</span>
+                        </div>
+                        <div class="progress" style="height:7px">
+                            <div class="progress-bar bg-primary" style="width:@pct%"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Events -->
+    <div class="col-md-8">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header fw-semibold bg-white">
+                <i class="bi bi-clock-history me-2 text-primary"></i>Recently Added Events
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th>Seats</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var e in Model.RecentEvents)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@e.Title</td>
+                                    <td class="small">@e.EventDate.ToString("dd MMM yyyy")</td>
+                                    <td>
+                                        <span class="@(e.IsSoldOut ? "text-danger fw-bold" : "text-success")">
+                                            @(e.IsSoldOut ? "SOLD OUT" : $"{e.AvailableSeats} left")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @{
+                                            var badgeClass = e.Status switch
+                                            {
+                                                EventStatus.Upcoming => "bg-success",
+                                                EventStatus.SoldOut => "bg-danger",
+                                                EventStatus.Completed => "bg-secondary",
+                                                EventStatus.Cancelled => "bg-dark",
+                                                _ => "bg-info"
+                                            };
+                                        }
+                                        <span class="badge @badgeClass">@e.Status</span>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Events" asp-action="Details"
+                                           asp-route-id="@e.Id" class="btn btn-sm btn-outline-primary py-0">View</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

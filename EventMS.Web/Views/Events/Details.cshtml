@@ -1,0 +1,98 @@
+@model Event
+@{ ViewData["Title"] = Model.Title; }
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <span class="badge bg-secondary mb-2">@Model.Category</span>
+                        @{
+                            var sc = Model.Status switch
+                            {
+                                EventStatus.Upcoming => "bg-success",
+                                EventStatus.SoldOut => "bg-danger",
+                                EventStatus.Completed => "bg-dark",
+                                _ => "bg-secondary"
+                            };
+                        }
+                        <span class="badge @sc ms-1 mb-2">@Model.Status</span>
+                        <h2 class="mb-0">@Model.Title</h2>
+                    </div>
+                    <h3 class="text-primary fw-bold">৳@Model.TicketPrice.ToString("N0")</h3>
+                </div>
+
+                <p class="text-muted">@Model.Description</p>
+
+                <hr />
+                <div class="row g-2 small">
+                    <div class="col-sm-6">
+                        <i class="bi bi-geo-alt-fill text-danger me-2"></i><strong>Venue:</strong> @Model.Venue
+                    </div>
+                    <div class="col-sm-6">
+                        <i class="bi bi-calendar3 text-primary me-2"></i><strong>Date:</strong>
+                        @Model.EventDate.ToString("dddd, dd MMMM yyyy")
+                    </div>
+                    <div class="col-sm-6">
+                        <i class="bi bi-clock text-warning me-2"></i><strong>Time:</strong>
+                        @Model.EventDate.ToString("hh:mm tt")
+                    </div>
+                    <div class="col-sm-6">
+                        <i class="bi bi-person-workspace text-success me-2"></i><strong>Organizer:</strong>
+                        @Model.OrganizerName
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Seat Info Card -->
+        <div class="card shadow-sm border-0 mb-3">
+            <div class="card-body text-center">
+                <div class="display-4 fw-bold @(Model.IsSoldOut ? "text-danger" : "text-success")">
+                    @(Model.IsSoldOut ? "0" : Model.AvailableSeats.ToString())
+                </div>
+                <div class="text-muted small">seats available</div>
+                <div class="progress my-2" style="height:10px">
+                    @{ var pct = Model.MaxCapacity > 0 ? Model.RegisteredCount * 100 / Model.MaxCapacity : 0; }
+                    <div class="progress-bar @(Model.IsSoldOut ? "bg-danger" : "bg-success")"
+                         style="width:@pct%"></div>
+                </div>
+                <small class="text-muted">@Model.RegisteredCount / @Model.MaxCapacity registered</small>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-grid gap-2">
+            @if (!Model.IsSoldOut && Model.EventDate > DateTime.Now)
+            {
+                <a asp-controller="Registrations" asp-action="Register" asp-route-eventId="@Model.Id"
+                   class="btn btn-success btn-lg">
+                    <i class="bi bi-ticket-perforated me-2"></i>Register Now
+                </a>
+            }
+            else if (Model.IsSoldOut)
+            {
+                <button class="btn btn-danger btn-lg" disabled>
+                    <i class="bi bi-x-circle me-2"></i>Sold Out
+                </button>
+            }
+
+            <a asp-action="CheckIn" asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                <i class="bi bi-qr-code-scan me-2"></i>Check-In Portal
+            </a>
+
+            <a asp-action="Attendees" asp-route-id="@Model.Id"
+               class="btn btn-outline-info">
+                <i class="bi bi-people me-2"></i>View Attendees
+            </a>
+
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-pencil me-1"></i>Edit Event
+            </a>
+        </div>
+    </div>
+</div>

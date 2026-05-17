@@ -1,0 +1,53 @@
+@model Registration
+@{ ViewData["Title"] = "Registration Confirmed!"; }
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-success shadow text-center">
+            <div class="card-body py-5">
+                <div class="text-success mb-3">
+                    <i class="bi bi-check-circle-fill" style="font-size: 4rem;"></i>
+                </div>
+                <h3 class="fw-bold text-success">Registration Confirmed!</h3>
+                <p class="text-muted">Thank you, <strong>@Model.AttendeeName</strong>!</p>
+
+                <!-- The unique Booking ID (Feature 1) -->
+                <div class="my-4 p-3 bg-light rounded border">
+                    <div class="small text-muted text-uppercase fw-semibold mb-1">Your Booking ID</div>
+                    <div class="display-6 fw-bold text-primary tracking-wide">@Model.BookingId</div>
+                    <div class="small text-muted mt-1">Show this ID at the event gate for check-in</div>
+                </div>
+
+                <table class="table table-sm text-start mt-3">
+                    <tr>
+                        <td class="text-muted">Event</td>
+                        <td class="fw-semibold">@Model.Event?.Title</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Date</td>
+                        <td>@Model.Event?.EventDate.ToString("dddd, dd MMM yyyy, hh:mm tt")</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Venue</td>
+                        <td>@Model.Event?.Venue</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Email</td>
+                        <td>@Model.AttendeeEmail</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Amount Paid</td>
+                        <td class="fw-bold text-success">৳@Model.AmountPaid.ToString("N0")</td>
+                    </tr>
+                </table>
+
+                <div class="mt-3 d-flex gap-2 justify-content-center">
+                    <a asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId"
+                       class="btn btn-outline-primary btn-sm">Back to Event</a>
+                    <a asp-controller="Home" asp-action="Index"
+                       class="btn btn-outline-secondary btn-sm">Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
